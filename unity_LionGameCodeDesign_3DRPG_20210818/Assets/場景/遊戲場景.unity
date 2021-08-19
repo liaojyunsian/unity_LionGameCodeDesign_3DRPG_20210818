@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 592554336}
   - component: {fileID: 592554335}
   m_Layer: 0
-  m_Name: "\u53C3\u8003"
+  m_Name: "\u53C3\u8003(Capsule)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
