@@ -29,9 +29,9 @@ public class ThirdPersonController : MonoBehaviour
     // Range 範圍﹔可使用在數值類型資料上，例如﹔ int, float
 
     [Header("移動速度"), Tooltip("用來調整角色移動速度"), Range(1, 500)]
-    public float Speed = 10.5f;
+    public float speed = 10.5f;
     [Header("跳躍高度"), Tooltip("用來調整角色跳躍高度"), Range(0, 1000)]
-    public int Jump = 100;
+    public int jump = 100;
 
     [Header("是否站在地板上"), Tooltip("用來確定角色是否站在地板上")]
     public bool isGrounded;
@@ -41,9 +41,9 @@ public class ThirdPersonController : MonoBehaviour
     public float checkGroundRadius = 0.2f;
 
     [Header("跳躍音效")]
-    public AudioClip SoundJump;
+    public AudioClip soundJump;
     [Header("落地音效")]
-    public AudioClip SoundGround;
+    public AudioClip soundGround;
 
     [Header("動畫參數走路開關")]
     public string animatorParWalk = "走路開關";
@@ -141,20 +141,21 @@ public class ThirdPersonController : MonoBehaviour
     }
     /**/
 
-
     public KeyCode keyJump { get; }
 
 
     #endregion
 
     #region 方法 Method
+    #region 自訂方法
+    /** 自訂方法
     // 定義與實作較複雜程式的區塊．功能
     // 方法語法﹔修飾詞 傳回資料類型 方法名稱 (參數1, ... 參數N) {程式區塊}
     // 常用傳回類型﹔無傳回 void - 此方法沒有傳回資料
     // 格式化﹔ Ctrl + K D //排版
     // 自訂方法﹔
     // 名稱顏色為淡黃色 - 沒有被呼叫
-    //名稱顏色為淡黃色 - 有被呼叫
+    // 名稱顏色為淡黃色 - 有被呼叫
     private void Test()
     {
         print("我是自訂方法~");
@@ -164,14 +165,22 @@ public class ThirdPersonController : MonoBehaviour
     {
         return 999;
     }
+    /**/
+    #endregion
 
-    //參數語法﹔資料類型 參數名稱
-    private void Skill(int damage, string A)
+    #region 自訂 參數 方法
+    // 參數語法﹔資料類型 參數名稱
+    // 有預設值的參數可以不輸入引數．選填式參數
+    // ※ 選填式只能放在()右邊
+    /** 選填式參數 範例
+    private void Skill(int damage, string effect = "灰塵特效", string sound = "嘎嘎嘎")
     {
         print("參數版本 - 傷害值﹔" + damage);
-        print("參數版本 - 技能特效" + A);
+        print("參數版本 - 技能特效﹔" + effect);
+        print("參數版本 - 音效﹔" + sound);
     }
-
+    /**/
+    /**對照組﹔不使用參數
     // 降低維護與擴充性
     private void Skill_100()
     {
@@ -190,8 +199,61 @@ public class ThirdPersonController : MonoBehaviour
         print("傷害值 ﹔ " + 200);
         print("技能特效");
     }
+    /**/
+    #endregion
+
+    #region BMI 算法 與 摘要使用範例
+    // 不是必須要，但是很重要
+    // BMI = 體重 / 身高 * 身高 (公尺)
+    /// <summary>
+    /// 計算BMI的方法
+    /// </summary>
+    /// <param name="weight">體重，單位為公斤</param>
+    /// <param name="height">身高，單位為公分</param>
+    /// <param name="name">名字</param>
+    /// <returns></returns>
+    /** BMI程式
+    private float BMI(float weight, float height, string name = "測試")
+    {
+        print(name + " 的 BMI");
+
+        return weight / (height * height);
+    }
+    /**/
+    #endregion
+
+    #region 控制器方法定義
+    private void Move(float speedMove)
+    {
+
+    }
+
+    private float MoveInput()
+    {
+        return 0f;
+    }
+
+    private bool CheckGround()
+    {
+        return false;
+    }
+
+    private void Jump()
+    {
+
+    }
+
+    private void UpdateAnimation()
+    {
+
+    }
 
 
+
+
+
+
+    #endregion
 
     #endregion
 
@@ -231,6 +293,8 @@ public class ThirdPersonController : MonoBehaviour
         /**/
         #endregion
 
+        #region 呼叫方法語法用法
+        /**
         // 呼叫自訂方法語法﹔方法名稱()﹔
         Test();
         Test();
@@ -240,8 +304,25 @@ public class ThirdPersonController : MonoBehaviour
         print("跳躍值 ﹔ " + j);
         // 2.將傳回方法當成值使用
         print("跳躍值．當值使用 ﹔ " + (ReturnJump() + 1));
+        
+        //對照組 不使用參數
+        Skill_200();
+        Skill_150();
+        Skill_100();
+        
+        // 呼叫有參數的方法．必須輸入對應的引數
+        Skill(100);
+        Skill(999, "爆炸特效");
+        // 需求﹔傷害值 500．特效預設．音效換成 咻咻咻
+        // 有多個選填式參數時可使用指名參數語法﹔參數名稱: 值
+        Skill(500, sound: "咻咻咻");
 
-        Skill(100,"0");
+        print(BMI(61, 1.68f, "000"));
+        /**/
+        #endregion
+
+
+
 
     }
 
@@ -259,7 +340,6 @@ public class ThirdPersonController : MonoBehaviour
 
 
     }
-
 
 
     #endregion
