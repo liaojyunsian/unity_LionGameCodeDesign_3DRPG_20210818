@@ -2983,18 +2983,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 1
-  Color: {r: 0, g: 0, b: 0, a: 0}
-  white: {r: 0, g: 0, b: 0, a: 0}
-  yellow: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  Color1: {r: 0.5, g: 0.5, b: 0, a: 1}
-  Color2: {r: 0, g: 0.5, b: 0.5, a: 0.5}
-  v2: {x: 0, y: 0}
-  v2Right: {x: 1, y: 0}
-  v2Up: {x: 0, y: 1}
-  v2One: {x: 1, y: 1}
-  v2Custom: {x: 7.5, y: 100.9}
-  v3: {x: 1, y: 2, z: 3}
-  v4: {x: 1, y: 2, z: 3, w: 4}
+  Jump: 100
+  isGrounded: 0
+  v3CheckGroundOffset: {x: 0, y: 0, z: 0}
+  checkGroundRadius: 0.2
+  SoundJump: {fileID: 0}
+  SoundGround: {fileID: 0}
+  animatorParWalk: "\u8D70\u8DEF\u958B\u95DC"
+  animatorParRun: "\u8DD1\u6B65\u958B\u95DC"
+  animatorParHurt: "\u53D7\u50B7\u89F8\u767C"
+  animatorParDead: "\u6B7B\u4EA1\u958B\u95DC"
+  aud: {fileID: 0}
+  rig: {fileID: 0}
+  ani: {fileID: 0}
 --- !u!1001 &1611154034
 PrefabInstance:
   m_ObjectHideFlags: 0

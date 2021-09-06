@@ -1,10 +1,11 @@
 using UnityEngine;          // 引用 Unity API (倉庫 - 資料與功能)
 using UnityEngine.Video;    // 引用 影片 API
 /* 修飾詞 類別 類別名稱 : 繼承類別
-MonoBehaviour Unity 基底類別．要掛在物件上一定要繼承
-繼承後享有該類別的成員
-在類別以及成員上方添加三條斜線會添加摘要
-常用成員 ﹔ 欄位 Field 、 屬性 Property (變數) 、 方法 Method 、 事件 Event */
+// MonoBehaviour Unity 基底類別．要掛在物件上一定要繼承
+//繼承後享有該類別的成員
+//在類別以及成員上方添加三條斜線會添加摘要
+//常用成員 ﹔ 欄位 Field 、 屬性 Property (變數) 、 方法 Method 、 事件 Event 
+/**/
 /// <summary>
 /// Sky 2021.0906
 /// 第三人稱控制器
@@ -26,11 +27,41 @@ public class ThirdPersonController : MonoBehaviour
     // Header 標題
     // Tooltip 提示﹔滑鼠停留在欄位名稱上會顯示彈出視窗
     // Range 範圍﹔可使用在數值類型資料上，例如﹔ int, float
-    [Header("移動速度"),Tooltip("用來調整角色移動速度"),Range(1,500)]
 
+    [Header("移動速度"), Tooltip("用來調整角色移動速度"), Range(1, 500)]
     public float Speed = 10.5f;
+    [Header("跳躍高度"), Tooltip("用來調整角色跳躍高度"), Range(0, 1000)]
+    public int Jump = 100;
+
+    [Header("是否站在地板上"), Tooltip("用來確定角色是否站在地板上")]
+    public bool isGrounded;
+    [Header("檢查地板位移(三維向量)")]
+    public Vector3 v3CheckGroundOffset;
+    [Header("檢查地板半徑"), Range(0, 3)]
+    public float checkGroundRadius = 0.2f;
+
+    [Header("跳躍音效")]
+    public AudioClip SoundJump;
+    [Header("落地音效")]
+    public AudioClip SoundGround;
+
+    [Header("動畫參數走路開關")]
+    public string animatorParWalk = "走路開關";
+    public string animatorParRun = "跑步開關";
+    public string animatorParHurt = "受傷觸發";
+    public string animatorParDead = "死亡開關";
+
+    [Header("元件 音效來源")]
+    public AudioSource aud;
+    [Header("元件 剛體")]
+    public Rigidbody rig;
+    [Header("動畫控制器")]
+    public Animator ani;
+
+
 
     #region Unity 資料類型
+    /** 練習 Unity 資料類型
     //顏色 Color
     public Color Color;
     public Color white = Color.white;                       // 內建顏色
@@ -53,42 +84,184 @@ public class ThirdPersonController : MonoBehaviour
     public KeyCode jump = KeyCode.Space;
 
     // 遊戲資料類型
+    // 存放 Project 專案內的資料
     public AudioClip sound;     // 音效 mp3,ogg,wav
     public VideoClip video;     // 影片 mp4
     public Sprite sprite;       // 圖片 png,jpeg
     public Material material;   // 材質球
 
+    [Header("元件")]
+    // 元件 Component﹔屬性面板上可折疊的
+    public Transform tra;
+    public Animation aniOld;
+    public Animator aniNew;
+    public Light lig;
+    public Camera cam;
 
-
-
-
-
+    // 綠色蚯蚓
+    // 1.建議不要使用此名稱 
+    // 2.使用過時的 API
+    /**/
+    #endregion
 
     #endregion
 
-
-    #endregion
     #region 屬性 Property
+    /**屬性練習
+    // 屬性不會顯示在面板上
+    // 儲存資料，與欄位相同
+    // 差異在於﹔可以設定存取權限 Get Set
+    // 屬性語法﹔修飾詞 資料類型 屬性名稱{ 取; 存; }
+    public int readAndWrite { get; set; }
+    // 唯獨屬性﹔只能取得 get
+    public int read { get; }
+    // 唯獨屬性﹔透過 get 設定預設值．關鍵字 return 傳回值
+    public int readValue
+    {
+        get
+        {
+            return 77;
+        }
+
+    }
+    // 唯寫屬性﹔禁止．必須要有get
+    // public int write { set; }
+    // value 指的是指定的值
+    private int _hp;
+    public int hp
+    {
+        get
+        {
+            return _hp;
+        }
+        set
+        {
+            _hp = value;
+        }
+    }
+    /**/
 
 
-
+    public KeyCode keyJump { get; }
 
 
     #endregion
+
     #region 方法 Method
+    // 定義與實作較複雜程式的區塊．功能
+    // 方法語法﹔修飾詞 傳回資料類型 方法名稱 (參數1, ... 參數N) {程式區塊}
+    // 常用傳回類型﹔無傳回 void - 此方法沒有傳回資料
+    // 格式化﹔ Ctrl + K D //排版
+    // 自訂方法﹔
+    // 名稱顏色為淡黃色 - 沒有被呼叫
+    //名稱顏色為淡黃色 - 有被呼叫
+    private void Test()
+    {
+        print("我是自訂方法~");
+    }
 
+    private int ReturnJump()
+    {
+        return 999;
+    }
 
+    //參數語法﹔資料類型 參數名稱
+    private void Skill(int damage, string A)
+    {
+        print("參數版本 - 傷害值﹔" + damage);
+        print("參數版本 - 技能特效" + A);
+    }
 
+    // 降低維護與擴充性
+    private void Skill_100()
+    {
+        print("傷害值 ﹔ " + 100);
+        print("技能特效");
+    }
+
+    private void Skill_150()
+    {
+        print("傷害值 ﹔ " + 150);
+        print("技能特效");
+    }
+
+    private void Skill_200()
+    {
+        print("傷害值 ﹔ " + 200);
+        print("技能特效");
+    }
 
 
 
     #endregion
+
     #region 事件 Event
+    // 特定時間點會執行的方法．程式的入口 Start 等於 Console Main
+    // 開始事件 Start﹔遊戲開始時執行一次 - 處理初始化．取得資料等等
+    private void Start()
+    {
+        #region 輸出 方法
+        /** 輸出 方法
+        print("哈嘍．沃德 ~ ");
+        Debug.Log("一般訊息");
+        Debug.LogWarning("警告訊息");
+        Debug.LogError("錯誤訊息");
+        */
+        #endregion
+
+        #region 屬性練習
+        /**屬性練習
+        print("欄位資料 - 移動速度 ﹔ " + Speed);
+        print("屬性資料 - 讀寫屬性 ﹔ " + readAndWrite);
+        Speed = 20.5f;
+        readAndWrite = 90;
+        print("修改後的資料");
+        print("欄位資料 - 移動速度 ﹔ " + Speed);
+        print("屬性資料 - 讀寫屬性 ﹔ " + readAndWrite);
+
+        // 唯獨屬性
+        // read = 7;    //唯獨屬性不能設定 set
+        print("唯獨屬性 ﹔ " + read);
+        print("唯獨屬性 ﹔ " + readValue);
+
+        //屬性存取練習
+        print("HP ﹔ " + hp);
+        hp = 100;
+        print("HP ﹔ " + hp);
+        /**/
+        #endregion
+
+        // 呼叫自訂方法語法﹔方法名稱()﹔
+        Test();
+        Test();
+        // 呼叫有傳回值的方法
+        // 1.區域變數指定傳回值 - 區域變數僅能在此結構 (大括號) 內存取
+        int j = ReturnJump();
+        print("跳躍值 ﹔ " + j);
+        // 2.將傳回方法當成值使用
+        print("跳躍值．當值使用 ﹔ " + (ReturnJump() + 1));
+
+        Skill(100,"0");
+
+    }
+
+
+    // 更新事件 Update﹔一秒約執行 60 次 ． 60 FPS - Frame Per Second
+    private void Update()
+    {
+        #region 測試
+        /** YOYOYO~
+        print("YOYOYO ~ ");
+        /**/
+        #endregion
 
 
 
+
+    }
 
 
 
     #endregion
+
 }
