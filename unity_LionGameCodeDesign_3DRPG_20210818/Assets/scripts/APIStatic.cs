@@ -46,5 +46,9 @@ public class APIStatic : MonoBehaviour
         print("經過多久：" + Time.timeSinceLevelLoad);// time 時間
         #endregion
 
+        #region 靜態方法
+        float h = Input.GetAxis("Horizontal");
+        print("水平值：" + h);
+        #endregion
     }
 }
