@@ -2982,13 +2982,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ecc69cc2fb9754db30eddf80e095f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 1
-  Jump: 100
+  speed: 10.5
+  jump: 100
   isGrounded: 0
   v3CheckGroundOffset: {x: 0, y: 0, z: 0}
   checkGroundRadius: 0.2
-  SoundJump: {fileID: 0}
-  SoundGround: {fileID: 0}
+  soundJump: {fileID: 0}
+  soundGround: {fileID: 0}
   animatorParWalk: "\u8D70\u8DEF\u958B\u95DC"
   animatorParRun: "\u8DD1\u6B65\u958B\u95DC"
   animatorParHurt: "\u53D7\u50B7\u89F8\u767C"
