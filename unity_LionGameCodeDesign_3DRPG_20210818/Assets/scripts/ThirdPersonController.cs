@@ -1,5 +1,6 @@
 using UnityEngine;          // 引用 Unity API (倉庫 - 資料與功能)
 using UnityEngine.Video;    // 引用 影片 API
+
 /* 修飾詞 類別 類別名稱 : 繼承類別
 // MonoBehaviour Unity 基底類別．要掛在物件上一定要繼承
 //繼承後享有該類別的成員
@@ -38,7 +39,7 @@ public class ThirdPersonController : MonoBehaviour
     [Header("檢查地板位移(三維向量)")]
     public Vector3 v3CheckGroundOffset;
     [Header("檢查地板半徑"), Range(0, 3)]
-    public float checkGroundRadius = 0.2f;
+    public float checkGroundRadius = 0.1f;
 
     [Header("跳躍音效")]
     public AudioClip soundJump;
@@ -50,6 +51,12 @@ public class ThirdPersonController : MonoBehaviour
     public string animatorParRun = "跑步開關";
     public string animatorParHurt = "受傷觸發";
     public string animatorParDead = "死亡開關";
+    public string animatorParjump = "跳躍觸發";
+    public string animatorParIsGrounded = "是否在地板上";
+
+    [Header("玩家物件")]
+    public GameObject playerObject;
+
 
     [Header("元件 音效來源")]
     private AudioSource aud;
@@ -61,7 +68,7 @@ public class ThirdPersonController : MonoBehaviour
 
 
     #region Unity 資料類型
-    /** 練習 Unity 資料類型
+    /* 練習 Unity 資料類型
     //顏色 Color
     public Color Color;
     public Color white = Color.white;                       // 內建顏色
@@ -107,7 +114,7 @@ public class ThirdPersonController : MonoBehaviour
     #endregion
 
     #region 屬性 Property
-    /**屬性練習
+    /*屬性練習
     // 屬性不會顯示在面板上
     // 儲存資料，與欄位相同
     // 差異在於﹔可以設定存取權限 Get Set
@@ -140,15 +147,15 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
     /**/
-
-    public KeyCode keyJump { get; }
-
-
+    // C# 6.0 存取子 可以使用 Lambda => 運算子
+    // 語法 get => {程式區塊} - 單行可省略大括號
+    private bool keyJump { get => Input.GetKeyDown(KeyCode.Space); }
+    private bool keyMove { get => MoveInput("Vertical") != 0 | MoveInput("Horizontal") != 0; }
     #endregion
 
     #region 方法 Method
     #region 自訂方法
-    /** 自訂方法
+    /* 自訂方法
     // 定義與實作較複雜程式的區塊．功能
     // 方法語法﹔修飾詞 傳回資料類型 方法名稱 (參數1, ... 參數N) {程式區塊}
     // 常用傳回類型﹔無傳回 void - 此方法沒有傳回資料
@@ -172,7 +179,7 @@ public class ThirdPersonController : MonoBehaviour
     // 參數語法﹔資料類型 參數名稱
     // 有預設值的參數可以不輸入引數．選填式參數
     // ※ 選填式只能放在()右邊
-    /** 選填式參數 範例
+    /* 選填式參數 範例
     private void Skill(int damage, string effect = "灰塵特效", string sound = "嘎嘎嘎")
     {
         print("參數版本 - 傷害值﹔" + damage);
@@ -180,7 +187,7 @@ public class ThirdPersonController : MonoBehaviour
         print("參數版本 - 音效﹔" + sound);
     }
     /**/
-    /**對照組﹔不使用參數
+    /*對照組﹔不使用參數
     // 降低維護與擴充性
     private void Skill_100()
     {
@@ -203,6 +210,7 @@ public class ThirdPersonController : MonoBehaviour
     #endregion
 
     #region BMI 算法 與 摘要使用範例
+    /*
     // 不是必須要，但是很重要
     // BMI = 體重 / 身高 * 身高 (公尺)
     /// <summary>
@@ -222,42 +230,98 @@ public class ThirdPersonController : MonoBehaviour
     /**/
     #endregion
 
-    #region 控制器方法定義
+
+
+    /// <summary>
+    /// 移動
+    /// </summary>
+    /// <param name="speedMove">移動速度</param>
     private void Move(float speedMove)
     {
-
+        // 請取消 animator 屬性 Apply Root Motion ：勾選時使用動畫位移資訊
+        // 剛體.加速度 = 三維向量 - 加速度用來控制剛sa體三個軸向的運動速度
+        // 前方(forward) * 輸入值(Vertical) * 移動(speedMove)
+        // 使用前後左右軸向運動並保持原本地心引力
+        rig.velocity =
+            Vector3.forward * MoveInput("Vertical") * speedMove +
+            Vector3.right * MoveInput("Horizontal") * speedMove +
+            Vector3.up * rig.velocity.y;
     }
 
-    private float MoveInput()
+    /// <summary>
+    /// 移動按鍵輸入
+    /// </summary>
+    /// <param name="axisName">要取得的軸向名稱</param>>
+    /// <returns></returns>
+    private float MoveInput(string axisName)
     {
-        return 0f;
+        return Input.GetAxis(axisName);
     }
 
+    /// <summary>
+    /// 檢查地板
+    /// </summary>
+    /// <returns>是否碰到地板</returns>
     private bool CheckGround()
     {
-        return false;
+        // 物理.覆蓋球體(中心點．半徑．圖層)
+        Collider[] hits = Physics.OverlapSphere
+            (
+            transform.position +                        // 把物體座標＝角色座標
+            transform.right * v3CheckGroundOffset.x +   // 調整座標X
+            transform.up * v3CheckGroundOffset.y +      // 調整座標y
+            transform.forward * v3CheckGroundOffset.z,  // 調整座標z
+            checkGroundRadius,                          // 設定大小
+            1 << 3
+            );
+        // print("球體碰到的第一個場所:" + hits[0].name);
+
+        isGrounded = hits.Length > 0;
+
+        // 傳回 碰撞陣列數量 > 0 - 只要碰到指定圖層物件就代表在地板上
+        return hits.Length > 0;
     }
 
+    /// <summary>
+    /// 跳躍
+    /// </summary>
     private void Jump()
     {
+        print("是否在地面上:" + CheckGround());
 
+        // &&
+        // 如果 在地面上 並且 按下空白鍵 就跳躍
+        if (CheckGround() && keyJump)
+        {
+            // 剛體.添加推力(此物件的上方*跳躍)
+            rig.AddForce(transform.up * jump);
+        }
     }
 
+    /// <summary>
+    /// 更新動畫
+    /// </summary>
     private void UpdateAnimation()
     {
+        /* 
+         * ※
+         * 預期結果
+         * 按下前或後時 將布林值設為 truu
+         * 沒有按時 將布林值設為 false
+         * Input
+         * if
+         * != 、 == 比較運算子(選擇條件)
+         * /**/
+
+        ani.SetBool(animatorParWalk, keyMove);
+        //設定是否在地板上 動畫參數
+        ani.SetBool(animatorParIsGrounded, isGrounded);
+        // 如果 按下跳躍鍵 就 設定 跳躍觸發參數
+        // 判斷式 只有一行敘述(只有一個分號) 可以省略 大括號
+        if (keyJump) ani.SetTrigger(animatorParjump);
 
     }
-
-
-
-
-
-
     #endregion
-
-    #endregion
-
-    public GameObject playerObject;
 
     #region 事件 Event
     // 特定時間點會執行的方法．程式的入口 Start 等於 Console Main
@@ -333,6 +397,7 @@ public class ThirdPersonController : MonoBehaviour
         // 3.取得元件<泛型>();
         // 類別可以使用繼承類別(父類別)的成員．公開或保護 欄位、屬性與方法
         ani = GetComponent<Animator>();
+
     }
 
 
@@ -345,12 +410,36 @@ public class ThirdPersonController : MonoBehaviour
         /**/
         #endregion
 
-
-
+        //CheckGround();
+        Jump();
+        UpdateAnimation();
 
     }
 
+    // 固定更新事件：固定 0.02秒執行一次
+    // 處理物理行為．例如：rigidbody API
+    private void FixedUpdate()
+    {
+        Move(speed);
+    }
 
+    // 繪製圖示事件：
+    // 在 Unity Editor 內繪製圖示輔助開發．發布後會自動隱藏
+    private void OnDrawGizmos()
+    {
+        // 1.繪製顏色
+        // 2.繪製圖形
+        Gizmos.color = new Color(1, 0, 0.2f, 0.3f);
+
+        // transform(要小寫) 與此腳本在同階層的 Transform 元件 
+        Gizmos.DrawSphere
+            (
+            transform.position +                        // 把物體設定在角色身上
+            transform.right * v3CheckGroundOffset.x +   // 調整座標X
+            transform.up * v3CheckGroundOffset.y +      // 調整座標y
+            transform.forward * v3CheckGroundOffset.z,  // 調整座標z
+            checkGroundRadius                           // 設定大小
+            );
+    }
     #endregion
-
 }
