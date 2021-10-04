@@ -5713,3 +5713,4 @@ Received Import Request.
 Start importing Assets/ThirdPersonControllerAndCamera/攝影機根物件.prefab using Guid(79a739ecf11456e42a378d14623b0593) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2f365a87c6e024dea3286fb0c54b33d4') in 0.081669 seconds 
   Import took 0.087634 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
