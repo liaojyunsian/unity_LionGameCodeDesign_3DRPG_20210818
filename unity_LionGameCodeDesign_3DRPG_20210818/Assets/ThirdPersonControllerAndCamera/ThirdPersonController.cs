@@ -65,9 +65,11 @@ public class ThirdPersonController : MonoBehaviour
         // 剛體.加速度 = 三維向量 - 加速度用來控制剛sa體三個軸向的運動速度
         // 前方(forward) * 輸入值(Vertical) * 移動(speedMove)
         // 使用前後左右軸向運動並保持原本地心引力
+        // Vector3.forward 世界座標 的 前方 (全域)
+        // transform.forward 此物件 的 前方 (區域)
         rig.velocity =
-            Vector3.forward * MoveInput("Vertical") * speedMove +
-            Vector3.right * MoveInput("Horizontal") * speedMove +
+            transform.forward * MoveInput("Vertical") * speedMove +
+            transform.right * MoveInput("Horizontal") * speedMove +
             Vector3.up * rig.velocity.y;
     }
 
@@ -148,7 +150,30 @@ public class ThirdPersonController : MonoBehaviour
         if (keyJump) ani.SetTrigger(animatorParjump);
 
     }
+
+    [Header("面相速度"), Range(0, 50)]
+    public float speedLookAt = 2;
+
+    /// <summary>
+    /// 面向前方：面向攝影機前方位置
+    /// </summary>
+    private void LookAtForward()
+    {
+        // 垂直軸向 取絕對值 後 大於 0.1 處理 面向
+        if (Mathf.Abs(MoveInput("Vertical")) > 0.1f)
+        {
+            // 取得前方角度 = 四元.面相角度(前方座標 - 本身座標)
+            Quaternion angle = Quaternion.LookRotation(thirdPersonCamera.posForward - transform.position);
+            // 此物件的角度 = 四元.插值
+            transform.rotation = Quaternion.Lerp(transform.rotation, angle, Time.deltaTime * speedLookAt);
+        }
+    }
     #endregion
+
+    /// <summary>
+    /// 攝影機類別
+    /// </summary>
+    private ThirdPersonCamera thirdPersonCamera;
 
     #region 事件 Event
     // 特定時間點會執行的方法．程式的入口 Start 等於 Console Main
@@ -166,25 +191,26 @@ public class ThirdPersonController : MonoBehaviour
         // 類別可以使用繼承類別(父類別)的成員．公開或保護 欄位、屬性與方法
         ani = GetComponent<Animator>();
 
+        // 攝影機類別 = 透過類型搜尋物件<泛型>();
+        // FindObjectOfType 不要放在 Update 內使用會造成大量效能負擔
+        thirdPersonCamera = FindObjectOfType<ThirdPersonCamera>();
+
+
     }
-
-
     // 更新事件 Update﹔一秒約執行 60 次 ． 60 FPS - Frame Per Second
     private void Update()
     {
         //CheckGround();
         Jump();
         UpdateAnimation();
-
+        LookAtForward();
     }
-
     // 固定更新事件：固定 0.02秒執行一次
     // 處理物理行為．例如：rigidbody API
     private void FixedUpdate()
     {
         Move(speed);
     }
-
     // 繪製圖示事件：
     // 在 Unity Editor 內繪製圖示輔助開發．發布後會自動隱藏
     private void OnDrawGizmos()
