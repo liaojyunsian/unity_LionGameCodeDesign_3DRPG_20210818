@@ -114,7 +114,7 @@ public class ThirdPersonController : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        print("是否在地面上:" + CheckGround());
+        // print("是否在地面上:" + CheckGround());
 
         // &&
         // 如果 在地面上 並且 按下空白鍵 就跳躍
