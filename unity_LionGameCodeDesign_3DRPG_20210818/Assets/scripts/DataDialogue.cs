@@ -17,7 +17,10 @@ namespace Sky.Dialogue
     [CreateAssetMenu(menuName = "Sky/對話資料", fileName = "NPC 對話資料")]
     public class DataDialogue : ScriptableObject
     {
+        [Header("對話者名稱")]
+        public string nameDialogue;
         // 陣列:保存相同資料類型的結構
+        // Text Area 字串用屬性．可設定行數
         [Header("任務前對話內容"), TextArea(2, 7)]
         public string[] beforeMission;
         [Header("任務進行中對話內容"), TextArea(2, 7)]

@@ -62,11 +62,18 @@ namespace Sky.Dialogue
             }
         }
 
+        /// <summary>
+        /// 玩家退出範圍外 停止對話
+        /// </summary>
         private void StartDialogue()
         {
             if (CheckPlayer() && startDialogueKey)
             {
                 dialogueSystem.Dialogue(dataDialogue);
+            }
+            else if (!CheckPlayer())
+            {
+                dialogueSystem.StopDialogue();
             }
         }
 
