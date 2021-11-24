@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using Sky.Dialogue;
 
 namespace Sky.Enemy
 {
@@ -98,6 +99,12 @@ namespace Sky.Enemy
         #endregion
 
         #region 事件
+        [Header("NPC 名稱")]
+        public string nameNPC = "NPC 小明";
+
+        private NPC npc;
+        private HurtSystem hurtSystem;
+
         private Transform traPlayer;
         private string namePlayer = "玩家一";
 
@@ -106,8 +113,14 @@ namespace Sky.Enemy
             ani = GetComponent<Animator>();
             nma = GetComponent<NavMeshAgent>();
             nma.speed = speed;
+            hurtSystem = GetComponent<HurtSystem>();
 
             traPlayer = GameObject.Find(namePlayer).transform;
+            npc = GameObject.Find(nameNPC).GetComponent<NPC>();
+
+            //受傷系統 - 死亡事件觸發時 請 NPC 更新數量
+            //AddListener(方法) 添加監聽器(方法)
+            hurtSystem.onDead.AddListener(npc.UpDateMissionCount);
 
             nma.SetDestination(transform.position);//導覽器 一開始就先啟動
         }

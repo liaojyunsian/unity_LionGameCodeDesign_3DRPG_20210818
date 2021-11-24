@@ -25,6 +25,11 @@ namespace Sky.Dialogue
         [Header("對話系統")]
         public DialogueSystem dialogueSystem;
 
+        /// <summary>
+        /// 目前任務數量
+        /// </summary>
+        private int countCurrent;
+
         private void OnDrawGizmos()
         {
             Gizmos.color = new Color(0, 1, 0.2f, 0.3f);
@@ -63,7 +68,7 @@ namespace Sky.Dialogue
         }
 
         /// <summary>
-        /// 玩家退出範圍外 停止對話
+        /// 玩家進入範圍內 並且 按下只指定按鍵 請對話系統執行 開始對話 玩家退出範圍外 停止對話
         /// </summary>
         private void StartDialogue()
         {
@@ -77,5 +82,15 @@ namespace Sky.Dialogue
             }
         }
 
+        public void UpDateMissionCount()
+        {
+            countCurrent++;
+
+            // 目前數量 等於 需求數量 狀態 等於 完成任務
+            if (countCurrent == dataDialogue.countNeed)
+            {
+                dataDialogue.stateNPCMission = StateNPCMission.AfterMission;
+            }
+        }
     }
 }

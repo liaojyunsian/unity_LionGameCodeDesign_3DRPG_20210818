@@ -32,6 +32,6 @@ namespace Sky.Dialogue
         //
         //
         [Header("NPC ¥ô°Èª¬ºA")]
-        public StaeNPCMission staeNPCMission = StaeNPCMission.BeforeMission;
+        public StateNPCMission stateNPCMission = StateNPCMission.BeforeMission;
     }
 }
