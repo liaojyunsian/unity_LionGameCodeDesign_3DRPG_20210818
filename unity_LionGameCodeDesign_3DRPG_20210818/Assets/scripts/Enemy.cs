@@ -27,6 +27,9 @@ namespace Sky.Enemy
         #endregion
 
         #region 欄位 私人
+        /// <summary>
+        /// 狀態
+        /// </summary>
         [SerializeField]
         private StateEnemy state;
         /// <summary>
@@ -149,7 +152,7 @@ namespace Sky.Enemy
         /// </summary>
         private void Idle()
         {
-            if (playerInTrackRange) state = StateEnemy.Track;//如果 玩家進入 追蹤範圍 就切為追蹤狀態
+            if (!targetIsDead && playerInTrackRange) state = StateEnemy.Track;//如果 玩家進入 追蹤範圍 就切為追蹤狀態
 
             #region 進入條件
             if (isIdle) return;
@@ -182,7 +185,7 @@ namespace Sky.Enemy
         private void Walk()
         {
             #region 持續執行區域
-            if (playerInTrackRange) state = StateEnemy.Track;//如果 玩家進入 追蹤範圍 就切為追蹤狀態
+            if (!targetIsDead && playerInTrackRange) state = StateEnemy.Track;//如果 玩家進入 追蹤範圍 就切為追蹤狀態
 
             nma.SetDestination(v3RandomWalkFinal);//代理器.設定目的地(座標)
             ani.SetBool(parameterIdleWalk, nma.remainingDistance > 0.1f);//走路動畫 - 離目的地距離大於0.1 時走路
@@ -250,8 +253,13 @@ namespace Sky.Enemy
         public float timeAttack = 2.5f;
         [Header("攻擊延遲傳送傷害時間"), Range(0, 5)]
         public float delaySendDamage = 0.5f;
-
+        /// <summary>
+        /// 攻擊動畫名稱
+        /// </summary>
         private string parameterAttack = "攻擊觸發";
+        /// <summary>
+        /// 是否攻擊
+        /// </summary>
         public bool isAttack;
 
         /// <summary>
@@ -283,6 +291,11 @@ namespace Sky.Enemy
         }
 
         /// <summary>
+        /// 目標是否死亡
+        /// </summary>
+        private bool targetIsDead;
+
+        /// <summary>
         /// 延遲傳送傷害給目標
         /// </summary>
         /// <returns></returns>
@@ -301,13 +314,28 @@ namespace Sky.Enemy
             // 如果 碰撞物件數量大於 零．傳送攻擊力給碰撞物件的受傷系統
             if (hits.Length > 0)
             {
-                hits[0].GetComponent<HurtSystem>().Hurt(attack);
+                targetIsDead = hits[0].GetComponent<HurtSystem>().Hurt(attack);
+            }
+            if (targetIsDead)
+            {
+                TargetDead();
             }
 
             float waitToNextAttack = timeAttack - delaySendDamage;//計算剩餘冷卻時間
             yield return new WaitForSeconds(waitToNextAttack);//等待
 
             isAttack = false;//恢復 攻擊狀態
+        }
+
+        /// <summary>
+        /// 目標死亡
+        /// </summary>
+        private void TargetDead()
+        {
+            state = StateEnemy.Walk;
+            isIdle = false;
+            isWalk = false;
+            nma.isStopped = false;
         }
         #endregion
 

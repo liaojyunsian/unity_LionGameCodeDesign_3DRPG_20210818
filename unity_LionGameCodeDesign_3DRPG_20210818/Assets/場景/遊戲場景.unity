@@ -9488,6 +9488,39 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1138303605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138303596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15822bf8fc4bc744815f9f0ff787245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 20
+  onHurt:
+    m_PersistentCalls:
+      m_Calls: []
+  onDead:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1138303603}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  parameterHurt: "\u53D7\u50B7\u89F8\u767C"
+  parameterDead: "\u6B7B\u4EA1\u958B\u95DC"
 --- !u!1 &1139361004
 GameObject:
   m_ObjectHideFlags: 0
@@ -18025,6 +18058,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1567075716}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   parameterHurt: "\u53D7\u50B7\u89F8\u767C"
   parameterDead: "\u6B7B\u4EA1\u958B\u95DC"
   imgHp: {fileID: 1984741104}
@@ -18033,6 +18078,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cb5c9cedca12e1a4aa282ae7b53f42ab, type: 3}
   m_PrefabInstance: {fileID: 1291733863}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1567075716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567075708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8bebf4141ea6b848b1139e25c1eed18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 20
+  timeAttack: 1.3
+  delaySendDamage: 0.2
+  v3AttackOffset: {x: 0, y: 1, z: 1}
+  v3AttackaSize: {x: 1.5, y: 1.5, z: 1}
+  parameterAttack: "\u653B\u64CA\u5716\u5C64\u89F8\u767C"
 --- !u!1001 &1611154034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18442,6 +18505,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 66ca9bf0145725543a1e8a693589f362, type: 3}
       propertyPath: m_Name
       value: "\u7532\u87F2Polygonal Metalon"
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 66ca9bf0145725543a1e8a693589f362, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 66ca9bf0145725543a1e8a693589f362, type: 3}
       propertyPath: m_RootOrder

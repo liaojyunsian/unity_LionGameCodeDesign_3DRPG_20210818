@@ -21,7 +21,7 @@ namespace Sky
         public string parameterDead = "死亡開關";
         #endregion
 
-        #region 欄位﹔私人
+        #region 欄位﹔私人 與保護
         private Animator ani;
         //private 私人 不允許在子類別存取
         //public 公開 允許所有類別存取
@@ -43,12 +43,12 @@ namespace Sky
         /// </summary>
         /// <param name="damage">接收到的傷害</param>
         //成員要被子類別複寫必須加上 virtual 虛擬
-        public virtual void Hurt(float damage)
+        public virtual bool Hurt(float damage)
         {
             //如果 死亡參數已經勾選 就跳出
             if (ani.GetBool(parameterDead))
             {
-                return;
+                return true;
             }
             hp -= damage;
             ani.SetTrigger(parameterHurt);
@@ -56,7 +56,9 @@ namespace Sky
             if (hp <= 0)
             {
                 Dead();
+                return true;
             }
+            else return false;
         }
         #endregion
 

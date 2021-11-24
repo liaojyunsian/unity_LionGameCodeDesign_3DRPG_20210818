@@ -14,7 +14,7 @@ namespace Sky
         /// </summary>
         private float hpBarEffectOriginal;
         //複寫父類別成員 override
-        public override void Hurt(float damage)
+        public override bool Hurt(float damage)
         {
             hpBarEffectOriginal = hp;
 
@@ -22,6 +22,8 @@ namespace Sky
             base.Hurt(damage);
 
             StartCoroutine(HpBarEffect());
+
+            return hp <= 0;
         }
 
         /// <summary>
