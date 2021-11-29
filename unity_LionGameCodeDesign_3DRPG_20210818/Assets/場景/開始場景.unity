@@ -584,7 +584,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1087201238}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2112129274}
+        m_TargetAssemblyTypeName: Sky.SceneController, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u904A\u6232\u5834\u666F"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1087201238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,6 +729,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294633781}
   m_CullTransparentMesh: 1
+--- !u!1001 &1515350014
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2177571161924052588, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_Name
+      value: "\u5834\u666F\u63A7\u5236\u5668"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 232.6306
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 126.59311
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.925407
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177571161924052590, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
 --- !u!1 &1789008693
 GameObject:
   m_ObjectHideFlags: 0
@@ -799,7 +868,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1789008696}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2112129274}
+        m_TargetAssemblyTypeName: Sky.SceneController, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1789008696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1062,3 +1143,14 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893918647}
   m_CullTransparentMesh: 1
+--- !u!114 &2112129274 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2177571161924052589, guid: c34768927dd8b8348b5dbc96d8d7d60a, type: 3}
+  m_PrefabInstance: {fileID: 1515350014}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dae3574127c39d548a131d30c989fb43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
