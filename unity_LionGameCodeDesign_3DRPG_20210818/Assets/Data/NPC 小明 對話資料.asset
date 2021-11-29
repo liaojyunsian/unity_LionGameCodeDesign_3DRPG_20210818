@@ -17,8 +17,8 @@ MonoBehaviour:
   - "\u55E8\uFF01"
   - "\u6BBA\u6B7B\u602A\u7269\uFF01"
   missionning:
-  - "\u4F60\u9084\u6709\u6642\u9593\u3002"
+  - "\u9084\u6709\u6642\u9593\u3002"
   afterMission:
   - "\u68D2\uFF01"
-  countNeed: 10
-  staeNPCMission: 0
+  countNeed: 1
+  stateNPCMission: 0
